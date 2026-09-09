@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>اكسسوارات | سيفيرا</title>
+<!-- خطوط عربية + خط اللوجو -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;family=Playfair+Display:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<link href="css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- شريط العرض العلوي -->
+<div class="promo-strip">
+        🔥 خصم 15% على أول طلبية — استخدمي كود <strong>CIPHERA15</strong>
+</div>
+<!-- الهيدر (نفس الموجود بالرئيسية) -->
+<header class="header">
+<div class="logo-area">
+<a class="css-logo" href="index.html">
+<span class="logo-en">CIPHERA</span>
+<span class="logo-ar">سيفيرا</span>
+</a>
+</div>
+<div class="header-icons">
+<span id="search-toggle">🔍</span>
+<span id="wishlist-toggle">♡<span class="icon-badge" id="wishlist-count">0</span></span>
+<span id="account-toggle">👤</span>
+<span id="cart-toggle">🛒<span class="icon-badge" id="cart-count">0</span></span>
+</div>
+</header>
+<!-- شريط البحث -->
+<div class="search-bar" id="search-bar">
+<input id="search-input" placeholder="دوري عن منتج..." type="text"/>
+<span class="search-close" id="search-close">✕</span>
+</div>
+<!-- سلة المشتريات -->
+<div class="side-drawer" id="cart-drawer">
+<div class="drawer-header">
+<h3>سلة المشتريات</h3>
+<span class="drawer-close" id="cart-close">✕</span>
+</div>
+<div class="drawer-items" id="cart-items"></div>
+<div class="checkout-form" id="checkout-form" style="display:none;">
+<button class="checkout-back-btn" id="checkout-back-btn" type="button">→ رجوع للسلة</button>
+<input id="checkout-name" placeholder="الاسم الكامل" type="text"/>
+<input id="checkout-phone" placeholder="رقم الهاتف (مثال: 0599xxxxxx)" type="tel"/>
+<input id="checkout-address" placeholder="العنوان (المدينة / الحي / أقرب معلم)" type="text"/>
+<textarea id="checkout-notes" placeholder="ملاحظات إضافية (اختياري)" rows="2"></textarea>
+</div>
+<div class="drawer-footer">
+<div class="drawer-total">الإجمالي <span id="cart-total">0$</span></div>
+<button class="shop-btn drawer-checkout" id="cart-continue-btn" type="button">متابعة لإتمام الطلب ←</button>
+<button class="shop-btn drawer-checkout" id="checkout-btn" type="button" style="display:none;">تأكيد الطلب عبر واتساب</button>
+</div>
+</div>
+<!-- المفضلة -->
+<div class="side-drawer" id="wishlist-drawer">
+<div class="drawer-header">
+<h3>المفضلة</h3>
+<span class="drawer-close" id="wishlist-close">✕</span>
+</div>
+<div class="drawer-items" id="wishlist-items"></div>
+</div>
+<!-- خلفية معتمة خلف الأدراج -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<!-- مسار التصفح -->
+<div class="breadcrumb-bar">
+<p class="breadcrumb"><a href="index.html">الرئيسية</a> / <span class="current">اكسسوارات</span></p>
+</div>
+<!-- بانر الصنف -->
+<section class="page-hero" style="background-image: url('image/cat-accessories.jpg');">
+<div class="page-hero-content">
+<span class="sub-title">تشكيلتنا</span>
+<h1>اكسسوارات</h1>
+<p>اكسسوارات بأحدث الصيحات العالمية، مختارة بعناية عشانك</p>
+</div>
+</section>
+<!-- شرائح الفلترة السريعة -->
+<div class="quick-filters">
+<button class="filter-chip active" data-filter="all">الكل</button>
+<button class="filter-chip" data-filter="rings">خواتم</button>
+<button class="filter-chip" data-filter="bracelets">أساور</button>
+<button class="filter-chip" data-filter="watches">ساعات</button>
+<button class="filter-chip" data-filter="glasses">نظارات</button>
+<button class="filter-chip" data-filter="chains">سلاسل</button>
+<button class="filter-chip" data-filter="sets">أطقم مجوهرات</button>
+<button class="filter-chip" data-filter="earrings">حلوق</button>
+</div>
+<section class="shop-section">
+<!-- شريط عدد النتائج والفرز -->
+<div class="shop-toolbar">
+<span class="results-count">٢٨ منتج</span>
+<div class="sort-wrapper">
+<label for="sort-select">ترتيب حسب</label>
+<select id="sort-select">
+<option value="default">الأحدث</option>
+<option value="price-low">السعر: من الأقل للأعلى</option>
+<option value="price-high">السعر: من الأعلى للأقل</option>
+</select>
+</div>
+</div>
+<!-- شبكة الاكسسوارات -->
+<div class="collection-grid" data-supabase-category="accessories"><p class="products-loading">جاري تحميل المنتجات...</p></div>
+</section>
+<!-- إشعار التنبيه -->
+<div class="toast-box" id="toast-notification">
+<span id="toast-message">تمت الإضافة بنجاح!</span>
+</div>
+<!-- الفوتر -->
+<footer class="modern-footer">
+<div class="footer-container">
+<div class="footer-brand-side">
+<h2 class="footer-logo">سيفيرا</h2>
+<p>أحدث صيحات الموضة العالمية، توصلك لغزة بجودة وأناقة.</p>
+<div class="social-icons-dark">
+<span>IN</span>
+<span>TW</span>
+<span>FB</span>
+<span>IG</span>
+</div>
+</div>
+<div class="footer-links-group">
+<div class="footer-column">
+<h3>تصفحي</h3>
+<ul>
+<li><a href="index.html">الرئيسية</a></li>
+<li><a href="#">قصتنا</a></li>
+<li><a href="#">الأكثر طلباً</a></li>
+<li><a href="#">الأصناف</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>خدمة الزبائن</h3>
+<ul>
+<li><a href="#">تواصلي معنا</a></li>
+<li><a href="#">الشحن والاسترجاع</a></li>
+<li><a href="#">دليل المقاسات</a></li>
+<li><a href="#">الأسئلة الشائعة</a></li>
+</ul>
+</div>
+<div class="footer-column">
+<h3>تابعينا</h3>
+<p style="font-size: 12px; margin-bottom: 10px;">اشتركي عشان توصلك عروضنا الجديدة.</p>
+<form class="dark-newsletter-form">
+<input placeholder="بريدك الإلكتروني" required="" type="email"/>
+<button type="submit">→</button>
+</form>
+</div>
+</div>
+</div>
+<div class="footer-bottom-dark">
+<p>© 2026 سيفيرا. جميع الحقوق محفوظة.</p>
+</div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script><script src="js/supabase-config.js"></script><script src="js/main.js"></script>
+</body>
+</html>

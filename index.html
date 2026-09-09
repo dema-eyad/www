@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>سيفيرا | أزياء نسائية وحقائب</title>
+<!-- خطوط عربية + خط اللوجو -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&amp;family=Playfair+Display:ital@0;1&amp;display=swap" rel="stylesheet"/>
+<!-- سيتم ربط ملف CSS هنا -->
+<link href="css/style.css" rel="stylesheet"/>
+</head>
+<body>
+<!-- شريط التنقل العلوي (Header) -->
+<header class="header">
+<div class="logo-area">
+<a class="css-logo" href="index.html">
+<span class="logo-en">CIPHERA</span>
+<span class="logo-ar">سيفيرا</span>
+</a>
+</div>
+<div class="header-icons">
+<span id="search-toggle">🔍</span>
+<span id="wishlist-toggle">♡<span class="icon-badge" id="wishlist-count">0</span></span>
+<span id="cart-toggle">🛒<span class="icon-badge" id="cart-count">0</span></span>
+</div>
+</header>
+<!-- شريط البحث -->
+<div class="search-bar" id="search-bar">
+<input id="search-input" placeholder="دوري عن منتج..." type="text"/>
+<span class="search-close" id="search-close">✕</span>
+</div>
+<!-- سلة المشتريات -->
+<div class="side-drawer" id="cart-drawer">
+<div class="drawer-header">
+<h3>سلة المشتريات</h3>
+<span class="drawer-close" id="cart-close">✕</span>
+</div>
+<div class="drawer-items" id="cart-items"></div>
+<div class="checkout-form" id="checkout-form" style="display:none;">
+<button class="checkout-back-btn" id="checkout-back-btn" type="button">→ رجوع للسلة</button>
+<input id="checkout-name" placeholder="الاسم الكامل" type="text"/>
+<input id="checkout-phone" placeholder="رقم الهاتف (مثال: 0599xxxxxx)" type="tel"/>
+<input id="checkout-address" placeholder="العنوان (المدينة / الحي / أقرب معلم)" type="text"/>
+<textarea id="checkout-notes" placeholder="ملاحظات إضافية (اختياري)" rows="2"></textarea>
+</div>
+<div class="drawer-footer">
+<div class="drawer-total">الإجمالي <span id="cart-total">0$</span></div>
+<button class="shop-btn drawer-checkout" id="cart-continue-btn" type="button">متابعة لإتمام الطلب ←</button>
+<button class="shop-btn drawer-checkout" id="checkout-btn" type="button" style="display:none;">تأكيد الطلب عبر واتساب</button>
+</div>
+</div>
+<!-- المفضلة -->
+<div class="side-drawer" id="wishlist-drawer">
+<div class="drawer-header">
+<h3>المفضلة</h3>
+<span class="drawer-close" id="wishlist-close">✕</span>
+</div>
+<div class="drawer-items" id="wishlist-items"></div>
+</div>
+<!-- خلفية معتمة خلف الأدراج -->
+<div class="drawer-overlay" id="drawer-overlay"></div>
+<!-- القسم الرئيسي (Hero Section) -->
+<section class="hero">
+<div class="hero-content">
+<h1>موضة العالم... توصلك لغزة</h1>
+<p>في سيفيرا، منقرّبلك أحدث صيحات الموضة العالمية: فساتين، بلوزات، حقائب وأحذية نختارها بعناية عشانك، بجودة عالية وأسعار بتناسبك.</p>
+<a class="shop-btn" href="#categories">تسوقي الآن ↗</a>
+</div>
+<!-- أسهم التنقل -->
+<div class="hero-slider-controls">
+<div class="slider-arrow" id="prev-btn">→</div>
+<div class="slider-arrow" id="next-btn">←</div>
+</div>
+</section>
+<!-- =========================================
+       شريط المميزات المتحرك (Scrolling Ticker)
+    ========================================= -->
+<div class="scrolling-ticker">
+<div class="ticker-wrapper">
+<!-- النسخة الأولى من النص -->
+<div class="ticker-content">
+<span>توصيل لجميع مناطق غزة</span> <span class="dot">✦</span>
+<span>دفع عند الاستلام</span> <span class="dot">✦</span>
+<span>تشكيلة متجددة أسبوعياً</span> <span class="dot">✦</span>
+<span>جودة مضمونة</span> <span class="dot">✦</span>
+<span>أسعار منافسة</span> <span class="dot">✦</span>
+</div>
+<!-- النسخة الثانية (مكررة لضمان حركة مستمرة بدون انقطاع) -->
+<div class="ticker-content">
+<span>توصيل لجميع مناطق غزة</span> <span class="dot">✦</span>
+<span>دفع عند الاستلام</span> <span class="dot">✦</span>
+<span>تشكيلة متجددة أسبوعياً</span> <span class="dot">✦</span>
+<span>جودة مضمونة</span> <span class="dot">✦</span>
+<span>أسعار منافسة</span> <span class="dot">✦</span>
+</div>
+</div>
+</div>
+<!-- القسم الانتقالي الساحر (Parallax Divider) -->
+<section class="parallax-section">
+<div class="parallax-content">
+<h2>كل قطعة... تحكي أناقتك</h2>
+<p>موضة عالمية بلمسة سيفيرا</p>
+<div class="parallax-line"></div>
+</div>
+</section>
+<!-- قسم الأصناف -->
+<section class="categories-section" id="categories">
+<div class="section-header">
+<span class="sub-title">تشكيلتنا</span>
+<div class="divider">✦</div>
+<h2 class="main-title">تسوقي حسب الصنف</h2>
+</div>
+<div class="categories-grid">
+<a class="category-card" href="dresses.html">
+<div class="category-image-box">
+<img alt="فساتين" src="image/cat-dresses.jpg"/>
+</div>
+<h3>فساتين</h3>
+</a>
+<a class="category-card" href="tops.html">
+<div class="category-image-box">
+<img alt="ملابس علوية" src="image/cat-tops.jpg"/>
+</div>
+<h3>ملابس علوية</h3>
+</a>
+<a class="category-card" href="bags.html">
+<div class="category-image-box">
+<img alt="حقائب" src="image/cat-bags.jpg"/>
+</div>
+<h3>حقائب</h3>
+</a>
+<a class="category-card" href="shoes.html">
+<div class="category-image-box">
+<img alt="أحذية" src="image/cat-shoes.jpg"/>
+</div>
+<h3>أحذية</h3>
+</a>
+<a class="category-card" href="accessories.html">
+<div class="category-image-box">
+<img alt="اكسسوارات" src="image/cat-accessories.jpg"/>
+</div>
+<h3>اكسسوارات</h3>
+</a>
+<a class="category-card" href="heels.html">
+<div class="category-image-box">
+<img alt="هيلز" src="image/hels.jpg.png"/>
+</div>
+<h3>هيلز</h3>
+</a>
+<a class="category-card" href="jeans.html">
+<div class="category-image-box">
+<img alt="جينز" src="image/ana.jpg"/>
+</div>
+<h3>جينز</h3>
+</a>
+<a class="category-card" href="sportswear.html">
+<div class="category-image-box">
+<img alt="اطقم رياضية" src="image/bnb.jpg"/>
+</div>
+<h3>اطقم رياضية</h3>
+</a>
+</div>
+</section>
+<!-- قسم About / قصة البراند -->
+<section class="about-section">
+<div class="about-image">
+<img alt="سيفيرا" src="image/about-brand.jpg"/>
+</div>
+<div class="about-content" id="about-content">
+<span class="sub-title">قصتنا</span>
+<div class="divider">✦</div>
+<h2 class="main-title">وين ما كانت الموضة، سيفيرا بتوصلها لعندك</h2>
+<p>
+                سيفيرا متجر أزياء وحقائب نسائية بيقرّب أحدث صيحات الموضة العالمية لعندك بغزة.
+                منختار كل قطعة بعناية من أرقى المصادر العالمية، ومنوصلها لباب بيتك بجودة وأسعار بتستاهل.
+            </p>
+<p>
+                لأنو الأناقة مش رفاهية، هي طريقة تعبّري فيها عن حالك.
+                كل تفصيلة، من القماش للتفصيل، منختارها وإحنا حاطين ذوقك بعين الاعتبار.
+            </p>
+<a class="shop-btn" href="#categories">اكتشفي تشكيلتنا ↗</a>
+</div>
+</section>
+<section class="elegant-collection">
+<!-- عنوان القسم -->
+<div class="section-header" id="section-header">
+<span class="sub-title">الأكثر طلباً</span>
+<div class="divider">✦</div>
+<h2 class="main-title">قطعك المفضلة</h2>
+</div>
+<!-- شبكة المنتجات -->
+<div class="collection-grid" data-supabase-category="featured"><p class="products-loading">جاري تحميل المنتجات...</p></div>
+</section>
+<!-- =========================================
+       حاوية إشعارات التنبيه (Toast Notification)
+    ========================================= -->
+<div class="toast-box" id="toast-notification">
+<span id="toast-message">تمت الإضافة بنجاح!</span>
+</div>
+<footer class="modern-footer">
+<div class="footer-container">
+<!-- القسم الأول: العلامة التجارية ونبذة -->
+<div class="footer-brand-side">
+<h2 class="footer-logo">سيفيرا</h2>
+<p>أحدث صيحات الموضة العالمية، توصلك لغزة بجودة وأناقة.</p>
+<div class="social-icons-dark">
+<span>IN</span>
+<span>TW</span>
+<span>FB</span>
+<span>IG</span>
+</div>
+</div>
+<!-- أعمدة الروابط -->
+<div class="footer-links-group">
+<div class="footer-column">
+<h3>تصفحي</h3>
+<ul>
+<li><a href="#section-header">تشكيلة المتجر</a></li>
+<li><a href="#about-content">قصتنا</a></li>
+<li><a href="#section-header">الأكثر طلباً</a></li>
+<li><a href="#categories">الأصناف</a></li>
+</ul>
+</div>
+
+<div class="footer-column">
+<h3>تابعينا</h3>
+<p style="font-size: 12px; margin-bottom: 10px;">اشتركي عشان توصلك عروضنا الجديدة.</p>
+<form class="dark-newsletter-form">
+<input placeholder="بريدك الإلكتروني" required="" type="email"/>
+<button type="submit">→</button>
+</form>
+</div>
+</div>
+</div>
+<div class="footer-bottom-dark">
+<p>© 2026 سيفيرا. جميع الحقوق محفوظة.</p>
+</div>
+</footer>
+<!-- استدعاء مكتبة Vanilla Tilt لتأثير الـ 3D -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+<!-- هذا ملف الجافاسكريبت الخاص فينا -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script><script src="js/supabase-config.js"></script><script src="js/main.js"></script>
+</body>
+</html>

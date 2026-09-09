@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المنتجات | سيفيرا</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-body">
+
+    <!-- ============ شاشة تسجيل الدخول ============ -->
+    <div class="admin-login-wrap" id="admin-login-wrap">
+        <h2>دخول لوحة التحكم</h2>
+        <input type="email" id="admin-email" placeholder="البريد الإلكتروني" autocomplete="username">
+        <input type="password" id="admin-password" placeholder="كلمة المرور" autocomplete="current-password">
+        <button type="button" id="admin-login-btn">دخول</button>
+        <p class="admin-error" id="admin-login-error"></p>
+    </div>
+
+    <!-- ============ لوحة التحكم (بعد تسجيل الدخول) ============ -->
+    <div class="admin-panel" id="admin-panel" style="display:none;">
+
+        <div class="admin-topbar">
+            <h1>لوحة تحكم منتجات سيفيرا</h1>
+            <button class="admin-logout-btn" id="admin-logout-btn" type="button">تسجيل خروج</button>
+        </div>
+
+        <!-- إضافة / تعديل منتج -->
+        <div class="admin-section">
+            <h2 id="admin-form-title">إضافة منتج جديد</h2>
+            <form id="admin-product-form">
+                <input type="hidden" id="p-id">
+                <div class="admin-form-grid">
+
+                    <div class="admin-field full-width">
+                        <label>اسم المنتج</label>
+                        <input type="text" id="p-name" required placeholder="مثال: حقيبة ظهر كاجوال">
+                    </div>
+
+                    <div class="admin-field">
+                        <label>السعر ($)</label>
+                        <input type="number" id="p-price" step="0.01" min="0" required placeholder="25">
+                    </div>
+
+                    <div class="admin-field">
+                        <label>ترتيب الظهور (رقم أصغر = أول)</label>
+                        <input type="number" id="p-sort" min="0" value="0">
+                    </div>
+
+                    <div class="admin-field full-width">
+                        <label>مسار الصورة (نفس طريقة الموقع الحالية، مثال: image/حقائب ظهر/bag-backpack-1.jpg.png)</label>
+                        <input type="text" id="p-image" required placeholder="image/...">
+                    </div>
+
+                    <div class="admin-field">
+                        <label>الصنف (الصفحة اللي بيظهر فيها)</label>
+                        <select id="p-category-page">
+                            <option value="featured">الرئيسية (مميزة)</option>
+                            <option value="bags">حقائب</option>
+                            <option value="dresses">فساتين</option>
+                            <option value="heels">هيلز</option>
+                            <option value="shoes">أحذية</option>
+                            <option value="jeans">جينز</option>
+                            <option value="sportswear">أطقم رياضية</option>
+                            <option value="tops">ملابس علوية</option>
+                            <option value="accessories">اكسسوارات</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-field">
+                        <label>تصنيف الفلتر الفرعي (اختياري، مثال: backpack)</label>
+                        <input type="text" id="p-category-tag" placeholder="backpack / shoulder / ...">
+                    </div>
+
+                    <div class="admin-field">
+                        <label>عدد الألوان (1 = بدون ألوان إضافية)</label>
+                        <input type="number" id="p-colors" min="1" value="1">
+                    </div>
+
+                    <div class="admin-field checkbox-field">
+                        <input type="checkbox" id="p-instock" checked>
+                        <label for="p-instock" style="margin:0;">متوفر بالمخزون</label>
+                    </div>
+
+                    <button type="submit" class="admin-submit-btn" id="admin-submit-btn">إضافة المنتج</button>
+                    <button type="button" class="admin-logout-btn full-width" id="admin-cancel-edit-btn" style="display:none;">إلغاء التعديل</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- الطلبات الواردة -->
+        <div class="admin-section">
+            <h2>الطلبات الواردة</h2>
+            <div class="admin-filter-row">
+                <select id="admin-orders-filter">
+                    <option value="all">كل الحالات</option>
+                    <option value="pending">قيد الانتظار</option>
+                    <option value="confirmed">تم التأكيد</option>
+                    <option value="delivered">تم التوصيل</option>
+                    <option value="cancelled">ملغي</option>
+                </select>
+                <span class="admin-count-label" id="admin-orders-count">—</span>
+                <button class="admin-icon-btn" id="admin-orders-refresh" title="تحديث" type="button">⟳</button>
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>التاريخ</th>
+                            <th>الزبون</th>
+                            <th>الهاتف</th>
+                            <th>العنوان</th>
+                            <th>المنتجات</th>
+                            <th>الإجمالي</th>
+                            <th>الحالة</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-orders-tbody"></tbody>
+                </table>
+                <p class="admin-empty-msg" id="admin-orders-empty" style="display:none;">ما في طلبات هون.</p>
+            </div>
+        </div>
+
+        <!-- قائمة المنتجات -->
+        <div class="admin-section">
+            <h2>كل المنتجات</h2>
+            <div class="admin-filter-row">
+                <select id="admin-filter-category">
+                    <option value="all">كل الأصناف</option>
+                    <option value="featured">الرئيسية (مميزة)</option>
+                    <option value="bags">حقائب</option>
+                    <option value="dresses">فساتين</option>
+                    <option value="heels">هيلز</option>
+                    <option value="shoes">أحذية</option>
+                    <option value="jeans">جينز</option>
+                    <option value="sportswear">أطقم رياضية</option>
+                    <option value="tops">ملابس علوية</option>
+                    <option value="accessories">اكسسوارات</option>
+                </select>
+                <span class="admin-count-label" id="admin-count-label">—</span>
+            </div>
+
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>الصورة</th>
+                            <th>الاسم</th>
+                            <th>السعر</th>
+                            <th>الصنف</th>
+                            <th>فلتر فرعي</th>
+                            <th>ألوان</th>
+                            <th>الحالة</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-products-tbody"></tbody>
+                </table>
+                <p class="admin-empty-msg" id="admin-empty-msg" style="display:none;">ما في منتجات هون.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-toast" id="admin-toast"></div>
+
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
