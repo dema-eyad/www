@@ -499,7 +499,7 @@ if (drawerOverlay) drawerOverlay.addEventListener('click', closeAllDrawers);
 // =========================================
 // زر "إتمام الشراء" — بيحفظ الطلب بقاعدة البيانات وبعدين يوديك عالواتساب
 // =========================================
-const WHATSAPP_STORE_NUMBER = '970594908375'; // رقم واتساب المتجر (فلسطين)
+const WHATSAPP_STORE_NUMBER = '972594908375'; // رقم واتساب المتجر (فلسطين)
 
 const checkoutBtn = document.getElementById('checkout-btn');
 if (checkoutBtn) {
