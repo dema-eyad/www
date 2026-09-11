@@ -2090,3 +2090,256 @@ body {
     padding: 0 0 6px;
 }
 .checkout-back-btn:hover { text-decoration: underline; }
+
+/* =========================================
+   زر تبديل الوضع الليلي/النهاري
+========================================= */
+.theme-toggle-btn {
+    background: none;
+    border: none;
+    font-size: 17px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    color: inherit;
+}
+
+/* =========================================================
+   الوضع النهاري (Light Mode) — تصميم كامل بألوان دافئة ومبهجة
+   منفعّله بإضافة class="light-mode" على body عن طريق الجافاسكريبت
+   اللون المميز الجديد بهاد الوضع: وردي/عنابي دافئ بدل الذهبي
+   ============================================================ */
+body.light-mode {
+    background-color: #fdf8f3;
+    color: #2d2a26;
+}
+
+/* --- اللوقو بالهيدر --- */
+body.light-mode .css-logo .logo-ar { color: #c2427a; }
+
+/* --- بانر "كل قطعة... تحكي أناقتك" --- خليناها بألوان بيضا زي ما هي (فوق صورة غامقة تصميمياً) --- */
+body.light-mode .parallax-content h2,
+body.light-mode .parallax-content p { color: #ffffff; }
+body.light-mode .parallax-line { background-color: #c2427a; }
+
+/* --- الهيدر: نخفف الطبقة السودة (مش منشيلها كامل عشان الأيقونات البيضا تضل واضحة فوق أي صورة) --- */
+body.light-mode .header {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.32), transparent);
+}
+
+/* --- قسم الهيرو الرئيسي (الصفحة الأولى) --- */
+/* بدل الطبقة السودة، منحط طبقة متدرجة فاتحة بس تضل الصورة واضحة والنص مقروء */
+/* بلا أي طبقة إضاءة أبيض ولا أسود — صورة نضيفة، والوضوح بييجي من ظل قوي عالنص */
+body.light-mode .hero::before { display: none; }
+body.light-mode .hero-content h1 {
+    color: #ffffff;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 8px 24px rgba(0,0,0,0.6);
+}
+body.light-mode .hero-content p {
+    color: #f2f2f2;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* --- الشريط المتحرك (Ticker) --- */
+body.light-mode .scrolling-ticker {
+    background: #ffffff;
+    border-top-color: rgba(0,0,0,0.08);
+    border-bottom-color: rgba(0,0,0,0.08);
+}
+body.light-mode .ticker-content span { color: #2d2a26; }
+body.light-mode .ticker-content .dot { color: #c2427a; }
+
+/* --- قسم "تسوقي حسب الصنف" (الدوائر) --- */
+body.light-mode .categories-section { background-color: #fbeef1; }
+body.light-mode .sub-title,
+body.light-mode .divider { color: #c2427a; }
+body.light-mode .main-title { color: #2d2a26; text-shadow: none; }
+body.light-mode .category-card h3 { color: #444; }
+body.light-mode .category-card:hover h3 { color: #c2427a; }
+body.light-mode .category-card:active .category-image-box,
+body.light-mode .category-card:hover .category-image-box {
+    border-color: #c2427a;
+    box-shadow: 0 15px 35px rgba(194, 66, 122, 0.25);
+}
+
+/* --- قسم "قصتنا" --- */
+body.light-mode .about-section { background-color: #ffffff; }
+body.light-mode .about-content p { color: #3d3833; }
+body.light-mode .about-content .shop-btn {
+    color: #2d2a26;
+    border-color: rgba(0,0,0,0.25);
+    background: transparent;
+}
+body.light-mode .about-content .shop-btn:hover { color: #fff; }
+body.light-mode .about-content .shop-btn::before { background-color: #c2427a; }
+
+/* --- قسم "قطعك المفضلة / الأكثر طلباً" --- */
+body.light-mode .elegant-collection { background-color: #fdf8f3; }
+
+/* --- القسم يلي بيلف كل صفحات الأصناف (فلاتر + كروت + عرض المزيد) --- */
+/* هاد كان السبب الرئيسي للخلفية السودة يلي كانت ظاهرة ورا كل شي بصفحات الأصناف */
+body.light-mode .shop-section { background-color: #fdf1f5; }
+
+/* --- كروت المنتجات --- */
+body.light-mode .elegant-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+body.light-mode .card-details h3 { color: #2d2a26; }
+body.light-mode .card-details .price,
+body.light-mode .card-details .stars { color: #c2427a; }
+body.light-mode .add-cart-btn {
+    border-color: #c2427a;
+    color: #c2427a;
+}
+body.light-mode .add-cart-btn:hover,
+body.light-mode .add-cart-btn:active {
+    background: #c2427a;
+    color: #fff;
+}
+body.light-mode .view-details-btn {
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #2d2a26;
+}
+body.light-mode .view-details-btn:hover {
+    border-color: #c2427a;
+    background: rgba(194, 66, 122, 0.08);
+}
+
+/* --- السلة والمفضلة (الأدراج الجانبية) --- */
+body.light-mode .side-drawer {
+    background: #ffffff;
+    border-left: 1px solid rgba(0, 0, 0, 0.08);
+}
+body.light-mode .drawer-header,
+body.light-mode .drawer-footer {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+body.light-mode .drawer-header h3,
+body.light-mode .drawer-item-info h4 { color: #2d2a26; }
+body.light-mode .drawer-item { border-color: rgba(0, 0, 0, 0.08); }
+body.light-mode .drawer-total { color: #55504b; }
+body.light-mode .drawer-total span,
+body.light-mode .drawer-item-price { color: #c2427a; }
+/* زر "متابعة" و "إتمام الشراء" جوا السلة */
+body.light-mode .drawer-checkout {
+    color: #2d2a26;
+    border-color: rgba(0,0,0,0.25);
+    background: transparent;
+}
+body.light-mode .drawer-checkout:hover { color: #fff; }
+body.light-mode .drawer-checkout::before { background-color: #c2427a; }
+
+/* --- فورم بيانات الزبون --- */
+body.light-mode .checkout-form input,
+body.light-mode .checkout-form textarea {
+    background: #f5f0ea;
+    border-color: rgba(0, 0, 0, 0.12);
+    color: #2d2a26;
+}
+body.light-mode .checkout-form input::placeholder,
+body.light-mode .checkout-form textarea::placeholder { color: #999; }
+
+/* --- صفحات الأصناف: بانر الهيرو الصغير + الفلاتر --- */
+body.light-mode .page-hero::before { display: none; }
+body.light-mode .page-hero-content h1 {
+    color: #ffffff;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 8px 24px rgba(0,0,0,0.6);
+}
+body.light-mode .page-hero-content p {
+    color: #f2f2f2;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 8px 20px rgba(0,0,0,0.6);
+}
+body.light-mode .breadcrumb-bar .breadcrumb { color: #55504b; }
+body.light-mode .shop-toolbar { border-color: rgba(0, 0, 0, 0.08); }
+body.light-mode .shop-toolbar .results-count { color: #666; }
+body.light-mode .filter-chip {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #444;
+}
+body.light-mode .filter-chip:hover,
+body.light-mode .filter-chip.active {
+    background: #c2427a;
+    border-color: #c2427a;
+    color: #fff;
+}
+
+/* --- صفحة تفاصيل المنتج --- */
+body.light-mode .product-page-section { background-color: #fdf8f3; }
+body.light-mode .product-title-block h1 { color: #2d2a26; }
+body.light-mode .product-description { color: #55504b; }
+body.light-mode .gallery-main { background: #eeeeee; }
+body.light-mode .price-new { color: #c2427a; }
+body.light-mode .size-btn {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #2d2a26;
+}
+body.light-mode .size-btn.selected {
+    background: #2d2a26;
+    color: #fff;
+    border-color: #2d2a26;
+}
+body.light-mode .size-chart-box {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #55504b;
+}
+body.light-mode .qty-control { border-color: rgba(0, 0, 0, 0.15); }
+body.light-mode .qty-control button,
+body.light-mode .qty-control span { color: #2d2a26; }
+body.light-mode .add-cart-btn-lg { background: #2d2a26; color: #fff; }
+body.light-mode .add-cart-btn-lg:hover { background: #c2427a; }
+body.light-mode .wishlist-btn-lg {
+    border-color: rgba(0, 0, 0, 0.2);
+    color: #2d2a26;
+}
+body.light-mode .wishlist-btn-lg.active { border-color: #c2427a; color: #c2427a; }
+body.light-mode .related-products-section h2 { color: #2d2a26; }
+body.light-mode .products-loading { color: #666; }
+
+/* --- زر "عرض المزيد" --- */
+.load-more-btn {
+    display: block;
+    margin: 24px auto 10px;
+    padding: 12px 40px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #fff;
+    border-radius: 30px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.load-more-btn:hover { border-color: #cda53f; color: #cda53f; }
+body.light-mode .load-more-btn {
+    border-color: #c2427a;
+    background: #c2427a;
+    color: #ffffff;
+}
+body.light-mode .load-more-btn:hover {
+    border-color: #a8305f;
+    background: #a8305f;
+    color: #ffffff;
+}
+
+/* شعار سيفيرا فوق حقوق النشر بالفوتر */
+.footer-bottom-logo {
+    margin-bottom: 8px;
+}
+.footer-bottom-logo .logo-en {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #111;
+}
+.footer-bottom-logo .logo-ar {
+    font-family: 'Cairo', sans-serif;
+    font-size: 12px;
+    color: #555;
+    margin-right: 6px;
+}

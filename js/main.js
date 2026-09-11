@@ -722,35 +722,28 @@ if (carouselTrack) {
 
 // =========================================
 // فلترة المنتجات الحقيقية (شرائح الفلترة السريعة)
-// ملاحظة: منجيب الكروت "لحظة الضغط" مش مرة وحدة بس،
-// عشان تشتغل صح حتى لو الكروت انجابت من قاعدة البيانات بعد تحميل الصفحة
+// ملاحظة: الفلترة هلأ مرتبطة بنظام "عرض المزيد" —
+// كل ما تتغير الفلترة، منرجع نعرض أول 6 منتجات بس من جديد
 // =========================================
 const filterChips = document.querySelectorAll('.filter-chip');
 const resultsCount = document.querySelector('.results-count');
+const PRODUCTS_PAGE_SIZE = 6;
+
+let categoryProductsCache = [];
+let categoryVisibleCount = PRODUCTS_PAGE_SIZE;
+let categoryCurrentFilter = 'all';
 
 filterChips.forEach(chip => {
     chip.addEventListener('click', () => {
-        // تفعيل الزر المضغوط بصرياً
         filterChips.forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
 
-        const selected = chip.dataset.filter;
-        const filterableCards = document.querySelectorAll('.collection-grid .elegant-card');
-        let visibleCount = 0;
-
-        filterableCards.forEach(card => {
-            const matches = selected === 'all' || card.dataset.category === selected;
-            card.style.display = matches ? '' : 'none';
-            if (matches) visibleCount++;
-        });
-
-        // تحديث عدد النتائج تلقائياً
-        if (resultsCount) {
-            resultsCount.textContent = visibleCount + ' منتجات';
-        }
+        categoryCurrentFilter = chip.dataset.filter;
+        categoryVisibleCount = PRODUCTS_PAGE_SIZE;
+        renderCategoryGrid();
     });
 });
- 
+
 // =========================================
 // إعدادات المقاسات لكل صنف — كل صنف إله نوع مقاسات مختلف
 // dresses/tops/sportswear = مقاسات ملابس عادية (S,M,L,XL)
@@ -840,7 +833,7 @@ const SIZE_CONFIGS = {
         hideSizeSection: true
     }
 };
- 
+
 // =========================================
 // منطق صفحة تفاصيل المنتج (product.html)
 // بيشتغل بس إذا لاقى #product-detail-root بالصفحة
@@ -852,22 +845,22 @@ function generateSku(name) {
     }
     return 'CPH-' + (10000 + Math.abs(hash));
 }
- 
+
 function renderRelatedProducts() {
     const grid = document.getElementById('pd-related-grid');
     const section = document.getElementById('pd-related-section');
     if (!grid) return;
- 
+
     let related = [];
     try {
         related = JSON.parse(sessionStorage.getItem('ciphera_related_products') || '[]');
     } catch (e) { related = []; }
- 
+
     if (!related.length) {
         if (section) section.style.display = 'none';
         return;
     }
- 
+
     grid.innerHTML = related.map(p => `
         <div class="elegant-card" data-price="${p.price}">
             <div class="card-image-box">
@@ -882,35 +875,35 @@ function renderRelatedProducts() {
             </div>
         </div>
     `).join('');
- 
+
     // منربط أزرار الكروت الجديدة بنفس منطق السلة/المفضلة/التفاصيل
     bindCardInteractions(grid);
     syncFavoriteIcons();
- 
+
     if (typeof VanillaTilt !== 'undefined') {
         VanillaTilt.init(grid.querySelectorAll('.elegant-card'), {
             max: 10, speed: 400, glare: true, "max-glare": 0.2
         });
     }
 }
- 
+
 function initProductDetailPage() {
     let product = null;
     try {
         product = JSON.parse(sessionStorage.getItem('ciphera_view_product'));
     } catch (e) { product = null; }
- 
+
     const root = document.getElementById('product-detail-root');
     const notFound = document.getElementById('product-not-found');
- 
+
     if (!product) {
         if (root) root.style.display = 'none';
         if (notFound) notFound.style.display = 'block';
         return;
     }
- 
+
     document.title = product.name + ' | سيفيرا';
- 
+
     // --- مسار التصفح ---
     const catLink = document.getElementById('pd-breadcrumb-category');
     if (catLink) {
@@ -919,7 +912,7 @@ function initProductDetailPage() {
     }
     const nameSpan = document.getElementById('pd-breadcrumb-name');
     if (nameSpan) nameSpan.textContent = product.name;
- 
+
     // --- معرض الصور ---
     const images = (product.images && product.images.length) ? product.images : [product.image];
     let activeIndex = 0;
@@ -927,7 +920,7 @@ function initProductDetailPage() {
     const thumbsContainer = document.getElementById('pd-thumbs');
     const prevArrow = document.getElementById('pd-prev-arrow');
     const nextArrow = document.getElementById('pd-next-arrow');
- 
+
     function renderGallery() {
         if (mainImg) mainImg.src = images[activeIndex];
         if (thumbsContainer) {
@@ -946,7 +939,7 @@ function initProductDetailPage() {
         }
     }
     renderGallery();
- 
+
     if (images.length > 1) {
         if (prevArrow) prevArrow.addEventListener('click', () => {
             activeIndex = (activeIndex - 1 + images.length) % images.length;
@@ -960,13 +953,13 @@ function initProductDetailPage() {
         if (prevArrow) prevArrow.style.display = 'none';
         if (nextArrow) nextArrow.style.display = 'none';
     }
- 
+
     // --- العنوان / SKU / السعر ---
     const titleEl = document.getElementById('pd-title');
     if (titleEl) titleEl.textContent = product.name;
     const skuEl = document.getElementById('pd-sku');
     if (skuEl) skuEl.textContent = 'رمز المنتج: ' + generateSku(product.name);
- 
+
     const oldPrice = Math.round(product.price * 1.3);
     const oldPriceEl = document.getElementById('pd-price-old');
     const newPriceEl = document.getElementById('pd-price-new');
@@ -977,7 +970,7 @@ function initProductDetailPage() {
         const pct = Math.max(1, Math.round((1 - product.price / oldPrice) * 100));
         badgeEl.textContent = 'خصم ' + pct + '%';
     }
- 
+
     // --- المقاسات (حسب صنف المنتج) ---
     const productCategorySlug = (product.categoryPage || '').replace('.html', '');
     // منتجات "الرئيسية / المميزة" مخزنة تحت صنف "featured"، فبنجرب نستخدم
@@ -993,18 +986,18 @@ function initProductDetailPage() {
     const chartTable = document.getElementById('pd-size-chart-table');
     const chartToggle = document.getElementById('pd-size-chart-toggle');
     const chartBox = document.getElementById('pd-size-chart-box');
- 
+
     if (sizeProfile.hideSizeSection) {
         // أصناف بدون مقاسات (زي الإكسسوارات) — منخفي القسم كامل
         if (sizeBlock) sizeBlock.style.display = 'none';
     } else {
         if (sizeLabel) sizeLabel.textContent = selectedSize;
- 
+
         if (sizeContainer) {
             sizeContainer.innerHTML = sizeProfile.sizes.map((s, i) =>
                 `<button class="size-btn ${i === 0 ? 'selected' : ''}" type="button" data-size="${s}">${s}</button>`
             ).join('');
- 
+
             sizeContainer.querySelectorAll('.size-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     sizeContainer.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
@@ -1014,7 +1007,7 @@ function initProductDetailPage() {
                 });
             });
         }
- 
+
         if (chartTable && sizeProfile.chartHeaders) {
             const headerRow = '<tr>' + sizeProfile.chartHeaders.map(h => `<th>${h}</th>`).join('') + '</tr>';
             const bodyRows = sizeProfile.chartRows.map(row =>
@@ -1022,12 +1015,12 @@ function initProductDetailPage() {
             ).join('');
             chartTable.innerHTML = headerRow + bodyRows;
         }
- 
+
         if (chartToggle && chartBox) {
             chartToggle.addEventListener('click', () => chartBox.classList.toggle('open'));
         }
     }
- 
+
     // --- الكمية ---
     let qty = 1;
     const qtyValueEl = document.getElementById('pd-qty-value');
@@ -1041,7 +1034,7 @@ function initProductDetailPage() {
         qty++;
         if (qtyValueEl) qtyValueEl.textContent = qty;
     });
- 
+
     // --- أضيفي للسلة ---
     const addBtn = document.getElementById('pd-add-cart-btn');
     if (addBtn) {
@@ -1055,11 +1048,11 @@ function initProductDetailPage() {
             showToast('تمت إضافة ' + qty + ' قطعة للسلة 🛍️');
         });
     }
- 
+
     // --- المفضلة ---
     const wishBtn = document.getElementById('pd-wishlist-btn');
     const galleryFav = document.getElementById('pd-gallery-fav');
- 
+
     function syncPdWishlist() {
         const list = getWishlist();
         const isFav = list.some(item => item.id === product.id);
@@ -1069,32 +1062,32 @@ function initProductDetailPage() {
         }
         if (galleryFav) galleryFav.classList.toggle('active', isFav);
     }
- 
+
     function toggleFav() {
         const added = toggleWishlist({ id: product.id, name: product.name, price: product.price, image: images[0] });
         showToast(added ? 'تمت الإضافة إلى المفضلة 💛' : 'تمت الإزالة من المفضلة');
         syncPdWishlist();
     }
- 
+
     if (wishBtn) wishBtn.addEventListener('click', toggleFav);
     if (galleryFav) galleryFav.addEventListener('click', toggleFav);
     syncPdWishlist();
- 
+
     // --- الوصف ---
     const descEl = document.getElementById('pd-description');
     if (descEl) {
         descEl.textContent = `قطعة "${product.name}" من تشكيلة ${product.categoryLabel || 'سيفيرا'}، مختارة بعناية من أحدث صيحات الموضة العالمية، بخامة مريحة وتفاصيل أنيقة تناسب إطلالتك اليومية.`;
     }
- 
+
     // --- منتجات مقترحة ---
     renderRelatedProducts();
 }
- 
+
 const productDetailRoot = document.getElementById('product-detail-root');
 if (productDetailRoot) {
     initProductDetailPage();
 }
- 
+
 // =========================================
 // تحميل المنتجات من قاعدة بيانات Supabase
 // بيشتغل تلقائياً على أي صفحة فيها .collection-grid[data-supabase-category]
@@ -1102,62 +1095,122 @@ if (productDetailRoot) {
 async function loadCollectionGrid() {
     const grid = document.querySelector('.collection-grid[data-supabase-category]');
     if (!grid) return; // هاي الصفحة ما إلها قاعدة بيانات (زي product.html)
- 
+
     if (!supabaseClient) {
         grid.innerHTML = '<p class="products-loading">⚠️ ما تم الاتصال بقاعدة البيانات — تأكدي من إعدادات js/supabase-config.js</p>';
         return;
     }
- 
+
     const categorySlug = grid.dataset.supabaseCategory;
- 
+
     const { data, error } = await supabaseClient
         .from('products')
         .select('*')
         .eq('category_page', categorySlug)
         .eq('in_stock', true)
         .order('sort_order', { ascending: true });
- 
+
     if (error) {
         console.error('خطأ بجلب المنتجات من Supabase:', error);
         grid.innerHTML = '<p class="products-loading">صار في مشكلة بتحميل المنتجات، جربي تحدّثي الصفحة.</p>';
         return;
     }
- 
+
     if (!data || data.length === 0) {
         grid.innerHTML = '<p class="products-loading">ما في منتجات بهاد الصنف هلأ.</p>';
         if (resultsCount) resultsCount.textContent = '0 منتج';
         return;
     }
- 
-    grid.innerHTML = data.map(p => `
-        <div class="elegant-card" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2"
-             data-id="${p.id}" data-price="${p.price}" data-order="${p.sort_order || 0}" data-category="${p.category_tag || ''}"
-             ${p.colors_count && p.colors_count > 1 ? `data-colors="${p.colors_count}"` : ''}>
-            <div class="card-image-box">
-                <span class="favorite-icon">♡</span>
-                <img src="${p.image}" alt="${p.name}">
+
+    categoryProductsCache = data;
+    categoryVisibleCount = PRODUCTS_PAGE_SIZE;
+    categoryCurrentFilter = 'all';
+    renderCategoryGrid();
+}
+
+// =========================================
+// رسم الكروت المرئية حسب الفلتر الحالي وعدد المنتجات المطلوب عرضها
+// (منستخدمها لأول تحميل، ولما تتغير الفلترة، ولما تضغط "عرض المزيد")
+// =========================================
+function renderCategoryGrid() {
+    const grid = document.querySelector('.collection-grid[data-supabase-category]');
+    if (!grid) return;
+
+    const filtered = categoryCurrentFilter === 'all'
+        ? categoryProductsCache
+        : categoryProductsCache.filter(p => p.category_tag === categoryCurrentFilter);
+
+    const visible = filtered.slice(0, categoryVisibleCount);
+
+    if (visible.length === 0) {
+        grid.innerHTML = '<p class="products-loading">ما في منتجات بهاد الفلتر.</p>';
+    } else {
+        grid.innerHTML = visible.map(p => `
+            <div class="elegant-card" data-tilt data-tilt-max="8" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2"
+                 data-id="${p.id}" data-price="${p.price}" data-order="${p.sort_order || 0}" data-category="${p.category_tag || ''}"
+                 ${p.colors_count && p.colors_count > 1 ? `data-colors="${p.colors_count}"` : ''}>
+                <div class="card-image-box">
+                    <span class="favorite-icon">♡</span>
+                    <img src="${p.image}" alt="${p.name}">
+                </div>
+                <div class="card-details">
+                    <h3>${p.name}</h3>
+                    <p class="price">${p.price}$</p>
+                    <div class="stars">★★★★★</div>
+                    <button class="add-cart-btn" type="button">🛍️ أضيفي للسلة</button>
+                </div>
             </div>
-            <div class="card-details">
-                <h3>${p.name}</h3>
-                <p class="price">${p.price}$</p>
-                <div class="stars">★★★★★</div>
-                <button class="add-cart-btn" type="button">🛍️ أضيفي للسلة</button>
-            </div>
-        </div>
-    `).join('');
- 
+        `).join('');
+    }
+
     // منربط كل شي عالكروت الجديدة: مفضلة + سلة + عرض تفاصيل + ألوان + تأثير 3D
     bindCardInteractions(grid);
     syncFavoriteIcons();
- 
+
     if (typeof VanillaTilt !== 'undefined') {
         VanillaTilt.init(grid.querySelectorAll('.elegant-card'), {
             max: 12, speed: 400, glare: true, "max-glare": 0.3
         });
     }
- 
-    if (resultsCount) resultsCount.textContent = data.length + ' منتج';
+
+    if (resultsCount) resultsCount.textContent = filtered.length + ' منتج';
+
+    // --- إدارة زر "عرض المزيد" ---
+    let loadMoreBtn = document.getElementById('load-more-btn');
+    if (!loadMoreBtn) {
+        loadMoreBtn = document.createElement('button');
+        loadMoreBtn.id = 'load-more-btn';
+        loadMoreBtn.className = 'load-more-btn';
+        loadMoreBtn.type = 'button';
+        loadMoreBtn.textContent = 'عرض المزيد';
+        loadMoreBtn.addEventListener('click', () => {
+            categoryVisibleCount += PRODUCTS_PAGE_SIZE;
+            renderCategoryGrid();
+        });
+        grid.insertAdjacentElement('afterend', loadMoreBtn);
+    }
+    loadMoreBtn.style.display = categoryVisibleCount < filtered.length ? 'block' : 'none';
 }
- 
+
 loadCollectionGrid();
- 
+
+// =========================================
+// تبديل الوضع الليلي/النهاري (Dark/Light Mode)
+// =========================================
+(function initThemeToggle() {
+    const toggleBtn = document.getElementById('theme-toggle');
+    const savedTheme = localStorage.getItem('ciphera_theme');
+
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        if (toggleBtn) toggleBtn.textContent = '☀️';
+    }
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            const isLight = document.body.classList.toggle('light-mode');
+            toggleBtn.textContent = isLight ? '☀️' : '🌙';
+            localStorage.setItem('ciphera_theme', isLight ? 'light' : 'dark');
+        });
+    }
+})();
