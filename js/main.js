@@ -532,12 +532,13 @@ if (checkoutBtn) {
         // --- تجميع بيانات الطلب من عناصر السلة (Loop) ---
         const total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
         const orderItems = cart.map(item => ({
-            sku: item.sku || item.id,
-            name: item.name,
-            price: item.price,
-            qty: item.qty,
-            subtotal: +(item.price * item.qty).toFixed(2)
-        }));
+    sku: item.sku || item.id,
+    name: item.name,
+    price: item.price,
+    qty: item.qty,
+    subtotal: +(item.price * item.qty).toFixed(2),
+    image: item.image || ''
+}));
 
         // --- حفظ الطلب بجدول orders على Supabase ---
         if (supabaseClient) {

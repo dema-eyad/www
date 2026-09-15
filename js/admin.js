@@ -289,17 +289,22 @@ async function loadOrdersTable() {
 
     ordersEmpty.style.display = 'none';
     ordersCount.textContent = data.length + ' طلب';
-
+     
     ordersTbody.innerHTML = data.map(order => {
         const dateStr = new Date(order.created_at).toLocaleString('ar-EG', { dateStyle: 'short', timeStyle: 'short' });
-        const itemsSummary = (order.items || []).map(it => `${it.name} ×${it.qty}`).join('، ');
+        const itemsHtml = (order.items || []).map(it => `
+            <div class="admin-order-item-row">
+                ${it.image ? `<img class="admin-order-item-thumb" src="${escapeHtml(it.image)}" alt="">` : ''}
+                <span>${escapeHtml(it.name)} <b>×${it.qty}</b></span>
+            </div>
+        `).join('');
         return `
         <tr>
             <td>${dateStr}</td>
             <td>${escapeHtml(order.customer_name)}</td>
             <td>${escapeHtml(order.customer_phone)}</td>
             <td>${escapeHtml(order.customer_address || '—')}</td>
-            <td style="max-width:220px; white-space:normal;">${escapeHtml(itemsSummary)}</td>
+            <td style="max-width:260px; white-space:normal;">${itemsHtml}</td>
             <td>${order.total}$</td>
             <td>
                 <select class="admin-order-status" data-id="${order.id}" style="background:rgba(255,255,255,0.05); color:#fff; border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:4px 6px; font-family:'Cairo',sans-serif; font-size:11.5px;">
