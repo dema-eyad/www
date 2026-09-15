@@ -2343,3 +2343,7 @@ body.light-mode .load-more-btn:hover {
     color: #555;
     margin-right: 6px;
 }
+
+body.light-mode .modern-footer{
+    background-color: #db6c9c;
+}
